@@ -1,0 +1,4 @@
+{
+  "buildCommand": "npm install --no-package-lock && npm run build",
+  "framework": "vite"
+}
