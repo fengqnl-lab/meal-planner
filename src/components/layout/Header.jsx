@@ -1,12 +1,13 @@
 import { useAuth } from '../../hooks/useAuth'
 import { useProfile } from '../../hooks/useProfile'
 import { useNavigate, NavLink } from 'react-router-dom'
+import { BookOpen, CalendarDays, Lightbulb, Settings } from 'lucide-react'
 
 const NAV_ITEMS = [
-  { to: '/recipes',     label: '菜谱', icon: '📖' },
-  { to: '/menu',        label: '菜单', icon: '📅' },
-  { to: '/inspiration', label: '灵感', icon: '💡' },
-  { to: '/settings',    label: '设置', icon: '⚙️' },
+  { to: '/recipes',     label: '菜谱', icon: BookOpen },
+  { to: '/menu',        label: '菜单', icon: CalendarDays },
+  { to: '/inspiration', label: '灵感', icon: Lightbulb },
+  { to: '/settings',    label: '设置', icon: Settings },
 ]
 
 export default function Header() {
@@ -23,7 +24,7 @@ export default function Header() {
 
       {/* 桌面端导航 */}
       <nav className="hidden md:flex items-center gap-1">
-        {NAV_ITEMS.map(({ to, label, icon }) => (
+        {NAV_ITEMS.map(({ to, label, icon: Icon }) => (
           <NavLink
             key={to}
             to={to}
@@ -32,7 +33,7 @@ export default function Header() {
                ${isActive ? 'bg-primary-50 text-primary-600 font-medium' : 'text-gray-500 hover:bg-gray-100'}`
             }
           >
-            <span>{icon}</span>{label}
+            <Icon size={16} strokeWidth={1.5} />{label}
           </NavLink>
         ))}
       </nav>
