@@ -18,7 +18,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-10 bg-white border-b border-gray-100 px-4 h-14 flex items-center justify-between">
       <button onClick={() => navigate('/recipes')} className="font-semibold text-gray-800 hover:text-primary-600 transition-colors shrink-0">
-        🍳 家庭菜谱
+        🍳 一起吃饭
       </button>
 
       {/* 桌面端导航 */}
