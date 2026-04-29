@@ -9,8 +9,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['icons/*.png'],
       manifest: {
-        name: '家庭菜谱',
-        short_name: '家庭菜谱',
+        name: '一起吃饭',
+        short_name: '一起吃饭',
         description: '家庭每日菜谱规划',
         theme_color: '#000000',
         background_color: '#000000',
