@@ -31,7 +31,8 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-surface to-[#f3f1ed] flex items-center justify-center px-4">
       <div className="card-elevated w-full max-w-sm">
-        <h1 className="text-2xl font-bold text-center mb-1 text-gray-800 tracking-tight">一起吃饭</h1>
+        <img src="/logo.png" alt="Shef" className="w-16 h-16 rounded-2xl mx-auto mb-3" />
+        <h1 className="text-2xl font-bold text-center mb-1 text-gray-800 tracking-tight">Shef</h1>
         <p className="text-sm text-gray-400 text-center mb-8">家庭共享的菜谱与菜单</p>
 
         <div className="flex bg-stone-100/80 rounded-xl p-1 mb-6">

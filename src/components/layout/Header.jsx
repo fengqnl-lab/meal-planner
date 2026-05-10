@@ -16,8 +16,8 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-10 bg-white/70 backdrop-blur-xl border-b border-stone-100/60 px-5 h-14 flex items-center justify-between">
-      <button onClick={() => navigate('/recipes', { state: { cancelForm: true } })} className="font-semibold text-gray-800 hover:text-primary-700 transition-colors shrink-0 tracking-tight">
-        一起吃饭
+      <button onClick={() => navigate('/recipes', { state: { cancelForm: true } })} className="shrink-0 hover:opacity-80 transition-opacity">
+        <img src="/logo.png" alt="Shef" className="h-8 w-8 rounded-lg" />
       </button>
 
       {/* 桌面端导航 */}

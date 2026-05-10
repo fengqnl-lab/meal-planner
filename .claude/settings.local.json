@@ -12,7 +12,18 @@
       "Bash(git push *)",
       "Bash(gh repo *)",
       "Bash(npx vite *)",
-      "Bash(afplay /System/Library/Sounds/Frog.aiff)"
+      "Bash(afplay /System/Library/Sounds/Frog.aiff)",
+      "Bash(find ~/Desktop -maxdepth 1 -type f \\\\\\( -name \"*.png\" -o -name \"*.jpg\" -o -name \"*.jpeg\" -o -name \"*.svg\" -o -name \"*.webp\" \\\\\\) | sort)",
+      "Read(//Users/qfeng2/Desktop/**)",
+      "Bash(cp /Users/qfeng2/Desktop/Logo_shef.png /Users/qfeng2/meal-planner/public/icons/logo.png)",
+      "Bash(cp /Users/qfeng2/Desktop/Logo_shef.png /Users/qfeng2/meal-planner/public/icons/icon-512x512.png)",
+      "Bash(cp /Users/qfeng2/Desktop/Logo_shef.png /Users/qfeng2/meal-planner/public/icons/apple-touch-icon.png)",
+      "Bash(npx jimp-cli *)",
+      "Bash(node -e ' *)",
+      "Bash(cp /Users/qfeng2/Desktop/Logo_shef.png /Users/qfeng2/meal-planner/public/logo.png)"
+    ],
+    "additionalDirectories": [
+      "/Users/qfeng2/Desktop"
     ]
   }
 }
