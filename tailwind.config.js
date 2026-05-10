@@ -8,14 +8,16 @@ export default {
     extend: {
       colors: {
         primary: {
-          50:  '#fff1f2',
-          100: '#ffe4e6',
-          200: '#fecdd3',
-          500: '#ef4444',
-          600: '#dc2626',
-          700: '#b91c1c',
+          50:  '#f0f5f4',
+          100: '#dae8e5',
+          200: '#b8d4ce',
+          300: '#9ac4bb',
+          400: '#7db3a8',
+          500: '#6a9e94',
+          600: '#578679',
+          700: '#486d63',
         },
-        surface: '#fafaf9',
+        surface: '#f8f7f5',
       },
       fontFamily: {
         sans: ['"PingFang SC"', '"Hiragino Sans GB"', '"Microsoft YaHei"', 'sans-serif'],
