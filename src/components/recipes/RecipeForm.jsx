@@ -92,6 +92,7 @@ export default function RecipeForm({ onSubmit, onCancel, initialValues }) {
   }
 
   return (
+  <>
     <form onSubmit={handleSubmit} className="space-y-5">
       {/* 封面图 */}
       <div>
@@ -205,14 +206,15 @@ export default function RecipeForm({ onSubmit, onCancel, initialValues }) {
           {saving ? '保存中…' : '保存菜谱'}
         </button>
       </div>
-
-      {editorOpen && rawImageSrc && (
-        <ImageEditor
-          imageSrc={rawImageSrc}
-          onConfirm={handleEditorConfirm}
-          onCancel={handleEditorCancel}
-        />
-      )}
     </form>
+
+    {editorOpen && rawImageSrc && (
+      <ImageEditor
+        imageSrc={rawImageSrc}
+        onConfirm={handleEditorConfirm}
+        onCancel={handleEditorCancel}
+      />
+    )}
+  </>
   )
 }
