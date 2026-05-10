@@ -1,4 +1,5 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import { useRecipes } from '../hooks/useRecipes'
 import RecipeCard from '../components/recipes/RecipeCard'
 import RecipeForm from '../components/recipes/RecipeForm'
@@ -8,6 +9,14 @@ export default function RecipesPage() {
   const [showForm, setShowForm] = useState(false)
   const [search, setSearch] = useState('')
   const [activeTag, setActiveTag] = useState('')
+  const location = useLocation()
+
+  useEffect(() => {
+    if (location.state?.cancelForm) {
+      setShowForm(false)
+      window.history.replaceState({}, '')
+    }
+  }, [location.state])
 
   const allTags = useMemo(() => {
     const set = new Set(recipes.flatMap((r) => r.tags ?? []))
