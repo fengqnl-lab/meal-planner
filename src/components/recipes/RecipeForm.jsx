@@ -1,5 +1,7 @@
 import { useState } from 'react'
+import { Pencil } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
+import ImageEditor from './ImageEditor'
 
 const TAGS = ['早餐', '午餐', '晚餐', '素菜', '荤菜', '汤', '主食', '甜点', '快手']
 
@@ -12,14 +14,33 @@ export default function RecipeForm({ onSubmit, onCancel, initialValues }) {
   const [imageFile, setImageFile] = useState(null)
   const [imagePreview, setImagePreview] = useState(initialValues?.image_url ?? null)
   const [imageRemoved, setImageRemoved] = useState(false)
+  const [editorOpen, setEditorOpen] = useState(false)
+  const [rawImageSrc, setRawImageSrc] = useState(null)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
 
   function handleImageChange(e) {
     const file = e.target.files[0]
     if (!file) return
-    setImageFile(file)
-    setImagePreview(URL.createObjectURL(file))
+    setRawImageSrc(URL.createObjectURL(file))
+    setEditorOpen(true)
+    e.target.value = ''
+  }
+
+  function handleEditorConfirm(blob) {
+    const editedFile = new File([blob], 'edited-cover.jpg', { type: 'image/jpeg' })
+    setImageFile(editedFile)
+    setImagePreview(URL.createObjectURL(blob))
+    setEditorOpen(false)
+    if (rawImageSrc) URL.revokeObjectURL(rawImageSrc)
+    setRawImageSrc(null)
+    setImageRemoved(false)
+  }
+
+  function handleEditorCancel() {
+    setEditorOpen(false)
+    if (rawImageSrc) URL.revokeObjectURL(rawImageSrc)
+    setRawImageSrc(null)
   }
 
   async function uploadImage(userId) {
@@ -87,10 +108,16 @@ export default function RecipeForm({ onSubmit, onCancel, initialValues }) {
           <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
         </label>
         {imagePreview && (
-          <button type="button" onClick={() => { setImageFile(null); setImagePreview(null); setImageRemoved(true) }}
-            className="text-xs text-gray-400 hover:text-red-400 mt-1">
-            移除图片
-          </button>
+          <div className="flex gap-3 mt-1">
+            <button type="button" onClick={() => { setRawImageSrc(imagePreview); setEditorOpen(true) }}
+              className="text-xs text-primary-600 hover:text-primary-700 flex items-center gap-1">
+              <Pencil size={12} />编辑图片
+            </button>
+            <button type="button" onClick={() => { setImageFile(null); setImagePreview(null); setImageRemoved(true) }}
+              className="text-xs text-gray-400 hover:text-red-400">
+              移除图片
+            </button>
+          </div>
         )}
       </div>
 
@@ -178,6 +205,14 @@ export default function RecipeForm({ onSubmit, onCancel, initialValues }) {
           {saving ? '保存中…' : '保存菜谱'}
         </button>
       </div>
+
+      {editorOpen && rawImageSrc && (
+        <ImageEditor
+          imageSrc={rawImageSrc}
+          onConfirm={handleEditorConfirm}
+          onCancel={handleEditorCancel}
+        />
+      )}
     </form>
   )
 }
