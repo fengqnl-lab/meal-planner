@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
+import { Search } from 'lucide-react'
 import { useRecipes } from '../hooks/useRecipes'
 import RecipeCard from '../components/recipes/RecipeCard'
 import RecipeForm from '../components/recipes/RecipeForm'
@@ -48,41 +49,37 @@ export default function RecipesPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-5">
-        <h2 className="text-xl font-bold text-gray-800 tracking-tight">菜谱库</h2>
-        <button className="btn-primary text-sm" onClick={() => setShowForm(true)}>+ 新增</button>
+      {/* 搜索栏 */}
+      <div className="relative mb-4">
+        <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+        <input
+          className="input pl-10"
+          placeholder="搜索菜谱…"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
       </div>
 
-      {/* 搜索 */}
-      <input
-        className="input mb-4"
-        placeholder="搜菜名或食材…"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
-
-      {/* 标签筛选 */}
-      {allTags.length > 0 && (
-        <div className="flex gap-2 overflow-x-auto pb-2 mb-4 scrollbar-hide">
+      {/* 分类 tabs */}
+      <div className="flex gap-1 mb-5 border-b border-stone-100 -mx-4 px-4 overflow-x-auto scrollbar-hide">
+        <button
+          onClick={() => setActiveTag('')}
+          className={`shrink-0 px-4 py-2.5 text-sm font-medium transition-all duration-200 border-b-2 -mb-px
+            ${!activeTag ? 'border-primary-600 text-primary-700' : 'border-transparent text-gray-400 hover:text-gray-600'}`}
+        >
+          全部
+        </button>
+        {allTags.map((tag) => (
           <button
-            onClick={() => setActiveTag('')}
-            className={`shrink-0 px-3.5 py-1.5 rounded-xl text-sm transition-all duration-200
-              ${!activeTag ? 'bg-primary-600 text-white shadow-sm' : 'bg-white text-gray-600 shadow-card hover:shadow-card-hover'}`}
+            key={tag}
+            onClick={() => setActiveTag(tag === activeTag ? '' : tag)}
+            className={`shrink-0 px-4 py-2.5 text-sm font-medium transition-all duration-200 border-b-2 -mb-px
+              ${activeTag === tag ? 'border-primary-600 text-primary-700' : 'border-transparent text-gray-400 hover:text-gray-600'}`}
           >
-            全部
+            {tag}
           </button>
-          {allTags.map((tag) => (
-            <button
-              key={tag}
-              onClick={() => setActiveTag(tag === activeTag ? '' : tag)}
-              className={`shrink-0 px-3.5 py-1.5 rounded-xl text-sm transition-all duration-200
-                ${activeTag === tag ? 'bg-primary-600 text-white shadow-sm' : 'bg-white text-gray-600 shadow-card hover:shadow-card-hover'}`}
-            >
-              {tag}
-            </button>
-          ))}
-        </div>
-      )}
+        ))}
+      </div>
 
       {/* 列表 */}
       {loading && <p className="text-gray-400 text-sm text-center py-12">加载中…</p>}
@@ -90,10 +87,12 @@ export default function RecipesPage() {
       {!loading && filtered.length === 0 && (
         <div className="text-center py-16 text-gray-400">
           <p className="text-4xl mb-3">🍽️</p>
-          <p className="text-sm">{search || activeTag ? '没有匹配的菜谱' : '还没有菜谱，点右上角新增吧'}</p>
+          <p className="text-sm">{search || activeTag ? '没有匹配的菜谱' : '还没有菜谱，点击 + 新增吧'}</p>
         </div>
       )}
-      <div className="space-y-3">
+
+      {/* Grid */}
+      <div className="grid grid-cols-2 gap-3">
         {filtered.map((recipe) => (
           <RecipeCard key={recipe.id} recipe={recipe} onDelete={deleteRecipe} />
         ))}
