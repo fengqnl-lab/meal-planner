@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 
-export default function RecipeCard({ recipe, onDelete }) {
+export default function RecipeCard({ recipe }) {
   const navigate = useNavigate()
 
   return (
@@ -21,14 +21,6 @@ export default function RecipeCard({ recipe, onDelete }) {
             🍽️
           </div>
         )}
-        <button
-          onClick={(e) => { e.stopPropagation(); onDelete(recipe.id) }}
-          className="absolute top-2 right-2 w-6 h-6 rounded-full bg-black/30 backdrop-blur-sm text-white text-xs
-                     flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-          aria-label="删除"
-        >
-          ✕
-        </button>
       </div>
 
       {/* 标题 */}

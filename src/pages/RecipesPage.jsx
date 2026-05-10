@@ -6,7 +6,7 @@ import RecipeCard from '../components/recipes/RecipeCard'
 import RecipeForm from '../components/recipes/RecipeForm'
 
 export default function RecipesPage() {
-  const { recipes, loading, error, addRecipe, deleteRecipe } = useRecipes()
+  const { recipes, loading, error, addRecipe } = useRecipes()
   const [showForm, setShowForm] = useState(false)
   const [search, setSearch] = useState('')
   const [activeTag, setActiveTag] = useState('')
@@ -61,7 +61,7 @@ export default function RecipesPage() {
       </div>
 
       {/* 分类 tabs */}
-      <div className="flex gap-1 mb-5 border-b border-stone-100 -mx-4 px-4 overflow-x-auto scrollbar-hide">
+      <div className="flex justify-center gap-1 mb-5 border-b border-stone-100 -mx-4 px-4">
         <button
           onClick={() => setActiveTag('')}
           className={`shrink-0 px-4 py-2.5 text-sm font-medium transition-all duration-200 border-b-2 -mb-px
@@ -69,7 +69,7 @@ export default function RecipesPage() {
         >
           全部
         </button>
-        {allTags.map((tag) => (
+        {allTags.filter((t) => t !== '午餐' && t !== '晚餐').map((tag) => (
           <button
             key={tag}
             onClick={() => setActiveTag(tag === activeTag ? '' : tag)}
@@ -94,7 +94,7 @@ export default function RecipesPage() {
       {/* Grid */}
       <div className="grid grid-cols-2 gap-3">
         {filtered.map((recipe) => (
-          <RecipeCard key={recipe.id} recipe={recipe} onDelete={deleteRecipe} />
+          <RecipeCard key={recipe.id} recipe={recipe} />
         ))}
       </div>
     </div>
