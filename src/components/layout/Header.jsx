@@ -1,13 +1,11 @@
 import { useAuth } from '../../hooks/useAuth'
 import { useProfile } from '../../hooks/useProfile'
 import { useNavigate, NavLink } from 'react-router-dom'
-import { BookOpen, CalendarDays, Lightbulb, Settings } from 'lucide-react'
+import { BookOpen, CalendarDays } from 'lucide-react'
 
 const NAV_ITEMS = [
-  { to: '/recipes',     label: '菜谱', icon: BookOpen },
-  { to: '/menu',        label: '菜单', icon: CalendarDays },
-  { to: '/inspiration', label: '灵感', icon: Lightbulb },
-  { to: '/settings',    label: '设置', icon: Settings },
+  { to: '/recipes', label: '菜谱', icon: BookOpen },
+  { to: '/menu',    label: '菜单', icon: CalendarDays },
 ]
 
 export default function Header() {

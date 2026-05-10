@@ -11,7 +11,8 @@
       "Bash(git remote *)",
       "Bash(git push *)",
       "Bash(gh repo *)",
-      "Bash(npx vite *)"
+      "Bash(npx vite *)",
+      "Bash(afplay /System/Library/Sounds/Frog.aiff)"
     ]
   }
 }

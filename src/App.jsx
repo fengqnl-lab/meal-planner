@@ -3,7 +3,6 @@ import LoginPage from './pages/LoginPage'
 import RecipesPage from './pages/RecipesPage'
 import RecipeDetailPage from './pages/RecipeDetailPage'
 import MenuPage from './pages/MenuPage'
-import InspirationPage from './pages/InspirationPage'
 import SettingsPage from './pages/SettingsPage'
 import Layout from './components/layout/Layout'
 import { AuthProvider, useAuth } from './hooks/useAuth'
@@ -33,7 +32,6 @@ export default function App() {
             <Route path="recipes" element={<RecipesPage />} />
             <Route path="recipes/:id" element={<RecipeDetailPage />} />
             <Route path="menu" element={<MenuPage />} />
-            <Route path="inspiration" element={<InspirationPage />} />
             <Route path="settings" element={<SettingsPage />} />
           </Route>
         </Routes>
