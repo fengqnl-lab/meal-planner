@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { CalendarDays } from 'lucide-react'
 import { useMenu, toDateStr } from '../hooks/useMenu'
 import RecipePicker from '../components/menu/RecipePicker'
 
@@ -29,12 +30,14 @@ function formatTabLabel(date, index) {
 
 export default function MenuPage() {
   const days = getNext7Days()
-  const [selectedIdx, setSelectedIdx] = useState(0)
-  const selectedDate = days[selectedIdx]
+  const [selectedDate, setSelectedDate] = useState(days[0])
   const dateStr = toDateStr(selectedDate)
   const weekend = isWeekend(selectedDate)
+  const dateInputRef = useRef(null)
 
-  const { planMap, loading, setPlan, clearPlan } = useMenu(0)
+  const selectedIdx = days.findIndex((d) => toDateStr(d) === dateStr)
+
+  const { planMap, loading, setPlan, clearPlan } = useMenu(selectedDate)
   const [picking, setPicking] = useState(null)
   const navigate = useNavigate()
 
@@ -59,13 +62,13 @@ export default function MenuPage() {
   return (
     <div>
       {/* 日期 tabs */}
-      <div className="flex gap-2 mb-6 overflow-x-auto scrollbar-hide -mx-4 px-4">
+      <div className="flex gap-2 mb-6 overflow-x-auto scrollbar-hide -mx-4 px-4 items-center">
         {days.map((day, i) => {
-          const active = i === selectedIdx
+          const active = selectedIdx === i
           return (
             <button
               key={i}
-              onClick={() => setSelectedIdx(i)}
+              onClick={() => setSelectedDate(day)}
               className={`shrink-0 flex flex-col items-center px-4 py-2.5 rounded-2xl transition-all duration-200
                 ${active
                   ? 'bg-primary-600 text-white shadow-sm'
@@ -78,6 +81,26 @@ export default function MenuPage() {
             </button>
           )
         })}
+
+        {/* 日历按钮 */}
+        <button
+          onClick={() => dateInputRef.current?.showPicker()}
+          className="shrink-0 w-11 h-11 rounded-2xl bg-white shadow-card hover:shadow-card-hover flex items-center justify-center text-gray-500 hover:text-primary-600 transition-all duration-200"
+        >
+          <CalendarDays size={18} />
+        </button>
+        <input
+          ref={dateInputRef}
+          type="date"
+          className="sr-only"
+          value={dateStr}
+          onChange={(e) => {
+            if (e.target.value) {
+              const [y, m, d] = e.target.value.split('-').map(Number)
+              setSelectedDate(new Date(y, m - 1, d))
+            }
+          }}
+        />
       </div>
 
       {loading ? (

@@ -19,24 +19,21 @@ export function toDateStr(date) {
   return `${y}-${m}-${d}`
 }
 
-export function useMenu() {
+export function useMenu(selectedDate) {
   const [plans, setPlans] = useState([])
   const [loading, setLoading] = useState(true)
 
-  const today = new Date()
-  const end = new Date(today)
-  end.setDate(today.getDate() + 6)
+  const dateStr = toDateStr(selectedDate)
 
   const fetchPlans = useCallback(async () => {
     setLoading(true)
     const { data } = await supabase
       .from('menu_plans')
       .select('*, recipe:recipes(id, name, image_url)')
-      .gte('date', toDateStr(today))
-      .lte('date', toDateStr(end))
+      .eq('date', dateStr)
     setPlans(data ?? [])
     setLoading(false)
-  }, [])
+  }, [dateStr])
 
   useEffect(() => { fetchPlans() }, [fetchPlans])
 
