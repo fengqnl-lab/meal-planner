@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { CalendarDays } from 'lucide-react'
 import { useMenu, toDateStr } from '../hooks/useMenu'
@@ -33,7 +33,6 @@ export default function MenuPage() {
   const [selectedDate, setSelectedDate] = useState(days[0])
   const dateStr = toDateStr(selectedDate)
   const weekend = isWeekend(selectedDate)
-  const dateInputRef = useRef(null)
 
   const selectedIdx = days.findIndex((d) => toDateStr(d) === dateStr)
 
@@ -83,24 +82,22 @@ export default function MenuPage() {
         })}
 
         {/* 日历按钮 */}
-        <button
-          onClick={() => dateInputRef.current?.showPicker()}
-          className="shrink-0 w-11 h-11 rounded-2xl bg-white shadow-card hover:shadow-card-hover flex items-center justify-center text-gray-500 hover:text-primary-600 transition-all duration-200"
-        >
-          <CalendarDays size={18} />
-        </button>
-        <input
-          ref={dateInputRef}
-          type="date"
-          className="sr-only"
-          value={dateStr}
-          onChange={(e) => {
-            if (e.target.value) {
-              const [y, m, d] = e.target.value.split('-').map(Number)
-              setSelectedDate(new Date(y, m - 1, d))
-            }
-          }}
-        />
+        <div className="shrink-0 relative w-11 h-11">
+          <div className="w-11 h-11 rounded-2xl bg-white shadow-card flex items-center justify-center text-gray-500 pointer-events-none">
+            <CalendarDays size={18} />
+          </div>
+          <input
+            type="date"
+            className="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
+            value={dateStr}
+            onChange={(e) => {
+              if (e.target.value) {
+                const [y, m, d] = e.target.value.split('-').map(Number)
+                setSelectedDate(new Date(y, m - 1, d))
+              }
+            }}
+          />
+        </div>
       </div>
 
       {loading ? (
