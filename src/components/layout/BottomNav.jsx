@@ -1,7 +1,9 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { BookOpen, CalendarDays, Plus } from 'lucide-react'
 
 export default function BottomNav() {
+  const navigate = useNavigate()
+
   return (
     <div className="fixed bottom-5 inset-x-0 flex justify-center md:hidden z-10 px-6">
       <nav className="flex items-center gap-2 bg-white/90 backdrop-blur-xl rounded-full shadow-elevated px-3 py-2">
@@ -16,14 +18,14 @@ export default function BottomNav() {
           菜谱
         </NavLink>
 
-        <NavLink
-          to="/add"
+        <button
+          onClick={() => navigate('/recipes', { state: { openForm: true } })}
           className="flex items-center justify-center"
         >
           <div className="w-11 h-11 rounded-full bg-primary-600 shadow-lg shadow-primary-600/30 flex items-center justify-center text-white hover:bg-primary-700 active:scale-95 transition-all duration-200">
             <Plus size={22} strokeWidth={2.5} />
           </div>
-        </NavLink>
+        </button>
 
         <NavLink
           to="/menu"

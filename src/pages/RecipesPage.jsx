@@ -17,6 +17,10 @@ export default function RecipesPage() {
       setShowForm(false)
       window.history.replaceState({}, '')
     }
+    if (location.state?.openForm) {
+      setShowForm(true)
+      window.history.replaceState({}, '')
+    }
   }, [location.state])
 
   const allTags = useMemo(() => {
