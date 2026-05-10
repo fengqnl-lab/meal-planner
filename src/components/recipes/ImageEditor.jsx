@@ -51,11 +51,12 @@ export default function ImageEditor({ imageSrc, onConfirm, onCancel }) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-black/95">
+    <div className="fixed inset-0 z-50 flex flex-col bg-black/95" onClick={(e) => e.stopPropagation()} onSubmit={(e) => e.preventDefault()}>
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 shrink-0">
         <h2 className="text-white font-medium">编辑图片</h2>
         <button
+          type="button"
           onClick={() => { setAdjustments(DEFAULT_ADJUSTMENTS); setZoom(1); setRotation(0) }}
           className="text-xs text-gray-400 hover:text-white"
         >
@@ -98,6 +99,7 @@ export default function ImageEditor({ imageSrc, onConfirm, onCancel }) {
         {/* Tab bar */}
         <div className="flex gap-1 bg-gray-800 rounded-lg p-1 mb-3">
           <button
+            type="button"
             onClick={() => setActiveTab('crop')}
             className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-md text-sm font-medium transition-colors
               ${activeTab === 'crop' ? 'bg-primary-500 text-white' : 'text-gray-400 hover:text-white'}`}
@@ -106,6 +108,7 @@ export default function ImageEditor({ imageSrc, onConfirm, onCancel }) {
             裁剪
           </button>
           <button
+            type="button"
             onClick={() => setActiveTab('adjust')}
             className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-md text-sm font-medium transition-colors
               ${activeTab === 'adjust' ? 'bg-primary-500 text-white' : 'text-gray-400 hover:text-white'}`}
@@ -122,6 +125,7 @@ export default function ImageEditor({ imageSrc, onConfirm, onCancel }) {
             <div className="flex gap-2 justify-center">
               {ASPECTS.map(({ label, value }) => (
                 <button
+                  type="button"
                   key={label}
                   onClick={() => setAspect(value)}
                   className={`px-3 py-1 rounded-full text-xs font-medium transition-colors
@@ -168,6 +172,7 @@ export default function ImageEditor({ imageSrc, onConfirm, onCancel }) {
               </div>
             ))}
             <button
+              type="button"
               onClick={() => setAdjustments(DEFAULT_ADJUSTMENTS)}
               className="text-xs text-gray-500 hover:text-white"
             >
@@ -179,10 +184,11 @@ export default function ImageEditor({ imageSrc, onConfirm, onCancel }) {
 
       {/* Footer */}
       <div className="shrink-0 flex gap-3 px-4 py-3 pb-safe bg-gray-900 border-t border-gray-800">
-        <button onClick={onCancel} className="flex-1 py-2.5 rounded-lg text-gray-400 hover:text-white font-medium transition-colors">
+        <button type="button" onClick={onCancel} className="flex-1 py-2.5 rounded-lg text-gray-400 hover:text-white font-medium transition-colors">
           取消
         </button>
         <button
+          type="button"
           onClick={handleConfirm}
           disabled={processing}
           className="flex-1 py-2.5 rounded-lg bg-primary-500 text-white font-medium hover:bg-primary-600 disabled:opacity-50 transition-colors"
