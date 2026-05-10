@@ -40,7 +40,7 @@ export default function RecipesPage() {
   if (showForm) {
     return (
       <div>
-        <h2 className="text-xl font-bold mb-4">新增菜谱</h2>
+        <h2 className="text-xl font-bold mb-5 text-gray-800 tracking-tight">新增菜谱</h2>
         <RecipeForm onSubmit={handleAdd} onCancel={() => setShowForm(false)} />
       </div>
     )
@@ -48,14 +48,14 @@ export default function RecipesPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-bold">菜谱库</h2>
+      <div className="flex items-center justify-between mb-5">
+        <h2 className="text-xl font-bold text-gray-800 tracking-tight">菜谱库</h2>
         <button className="btn-primary text-sm" onClick={() => setShowForm(true)}>+ 新增</button>
       </div>
 
       {/* 搜索 */}
       <input
-        className="input mb-3"
+        className="input mb-4"
         placeholder="搜菜名或食材…"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
@@ -63,11 +63,11 @@ export default function RecipesPage() {
 
       {/* 标签筛选 */}
       {allTags.length > 0 && (
-        <div className="flex gap-2 overflow-x-auto pb-2 mb-3 scrollbar-hide">
+        <div className="flex gap-2 overflow-x-auto pb-2 mb-4 scrollbar-hide">
           <button
             onClick={() => setActiveTag('')}
-            className={`shrink-0 px-3 py-1 rounded-full text-sm border transition-colors
-              ${!activeTag ? 'bg-primary-500 border-primary-500 text-white' : 'border-gray-200 text-gray-600'}`}
+            className={`shrink-0 px-3.5 py-1.5 rounded-xl text-sm transition-all duration-200
+              ${!activeTag ? 'bg-primary-600 text-white shadow-sm' : 'bg-white text-gray-600 shadow-card hover:shadow-card-hover'}`}
           >
             全部
           </button>
@@ -75,8 +75,8 @@ export default function RecipesPage() {
             <button
               key={tag}
               onClick={() => setActiveTag(tag === activeTag ? '' : tag)}
-              className={`shrink-0 px-3 py-1 rounded-full text-sm border transition-colors
-                ${activeTag === tag ? 'bg-primary-500 border-primary-500 text-white' : 'border-gray-200 text-gray-600'}`}
+              className={`shrink-0 px-3.5 py-1.5 rounded-xl text-sm transition-all duration-200
+                ${activeTag === tag ? 'bg-primary-600 text-white shadow-sm' : 'bg-white text-gray-600 shadow-card hover:shadow-card-hover'}`}
             >
               {tag}
             </button>
@@ -85,11 +85,11 @@ export default function RecipesPage() {
       )}
 
       {/* 列表 */}
-      {loading && <p className="text-gray-400 text-sm text-center py-8">加载中…</p>}
+      {loading && <p className="text-gray-400 text-sm text-center py-12">加载中…</p>}
       {error && <p className="text-red-500 text-sm">{error}</p>}
       {!loading && filtered.length === 0 && (
-        <div className="text-center py-12 text-gray-400">
-          <p className="text-4xl mb-2">🍽️</p>
+        <div className="text-center py-16 text-gray-400">
+          <p className="text-4xl mb-3">🍽️</p>
           <p className="text-sm">{search || activeTag ? '没有匹配的菜谱' : '还没有菜谱，点右上角新增吧'}</p>
         </div>
       )}

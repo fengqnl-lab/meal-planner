@@ -5,14 +5,14 @@ export default function RecipeCard({ recipe, onDelete }) {
 
   return (
     <div
-      className="card flex gap-3 cursor-pointer hover:shadow-md transition-shadow active:scale-[0.99]"
+      className="card-hover flex gap-4 cursor-pointer active:scale-[0.99]"
       onClick={() => navigate(`/recipes/${recipe.id}`)}
     >
       {recipe.image_url && (
         <img
           src={recipe.image_url}
           alt={recipe.name}
-          className="w-20 h-20 object-cover rounded-lg shrink-0"
+          className="w-20 h-20 object-cover rounded-xl shrink-0"
         />
       )}
       <div className="flex-1 min-w-0">
@@ -20,7 +20,7 @@ export default function RecipeCard({ recipe, onDelete }) {
           <h3 className="font-semibold text-gray-800 truncate">{recipe.name}</h3>
           <button
             onClick={(e) => { e.stopPropagation(); onDelete(recipe.id) }}
-            className="text-gray-300 hover:text-red-400 text-lg leading-none shrink-0"
+            className="text-gray-300 hover:text-red-400 text-lg leading-none shrink-0 transition-colors"
             aria-label="删除"
           >
             ✕
@@ -32,9 +32,9 @@ export default function RecipeCard({ recipe, onDelete }) {
         )}
 
         {recipe.tags?.length > 0 && (
-          <div className="flex flex-wrap gap-1 mt-1.5">
+          <div className="flex flex-wrap gap-1.5 mt-2">
             {recipe.tags.map((tag) => (
-              <span key={tag} className="text-xs bg-primary-100 text-primary-700 px-2 py-0.5 rounded-full">
+              <span key={tag} className="text-xs bg-primary-50 text-primary-700 px-2.5 py-0.5 rounded-lg font-medium">
                 {tag}
               </span>
             ))}
@@ -42,7 +42,7 @@ export default function RecipeCard({ recipe, onDelete }) {
         )}
 
         {recipe.ingredients?.length > 0 && (
-          <p className="text-xs text-gray-400 mt-1">
+          <p className="text-xs text-gray-400 mt-1.5">
             {recipe.ingredients.slice(0, 4).map((i) => i.name).join('、')}
             {recipe.ingredients.length > 4 && ` 等 ${recipe.ingredients.length} 种`}
           </p>

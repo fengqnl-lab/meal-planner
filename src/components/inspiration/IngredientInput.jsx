@@ -18,16 +18,16 @@ export default function IngredientInput({ ingredients, onChange }) {
   }
 
   return (
-    <div className="border border-gray-200 rounded-lg p-2 flex flex-wrap gap-2 focus-within:ring-2 focus-within:ring-primary-500 focus-within:border-transparent">
+    <div className="bg-stone-50/60 border border-stone-200/60 rounded-xl p-3 flex flex-wrap gap-2 focus-within:ring-2 focus-within:ring-primary-400/30 focus-within:border-primary-400 focus-within:bg-white transition-all duration-200">
       {ingredients.map((ing) => (
-        <span key={ing} className="flex items-center gap-1 bg-primary-100 text-primary-700 text-sm px-2.5 py-1 rounded-full">
+        <span key={ing} className="flex items-center gap-1 bg-primary-100 text-primary-700 text-sm px-3 py-1 rounded-lg font-medium">
           {ing}
           <button type="button" onClick={() => onChange(ingredients.filter((i) => i !== ing))}
-            className="text-primary-400 hover:text-primary-700 leading-none">✕</button>
+            className="text-primary-400 hover:text-primary-700 leading-none transition-colors">✕</button>
         </span>
       ))}
       <input
-        className="flex-1 min-w-24 outline-none text-sm placeholder-gray-400 bg-transparent"
+        className="flex-1 min-w-24 outline-none text-sm placeholder-gray-400 bg-transparent py-1"
         placeholder={ingredients.length === 0 ? '输入食材，按回车添加…' : '继续添加…'}
         value={input}
         onChange={(e) => setInput(e.target.value)}

@@ -13,9 +13,9 @@ export default function RecipePicker({ onSelect, onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center">
-      <div className="absolute inset-0 bg-black/40" onClick={onClose} />
-      <div className="relative bg-white w-full max-w-lg rounded-t-2xl md:rounded-2xl max-h-[75vh] flex flex-col">
-        <div className="p-4 border-b border-gray-100">
+      <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative bg-white w-full max-w-lg rounded-t-2xl md:rounded-2xl max-h-[75vh] flex flex-col shadow-elevated">
+        <div className="p-5 border-b border-stone-100">
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-semibold text-gray-800">选择菜谱</h3>
             <div className="flex items-center gap-4">
@@ -25,7 +25,7 @@ export default function RecipePicker({ onSelect, onClose }) {
               >
                 + 新增菜谱
               </button>
-              <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-xl leading-none">✕</button>
+              <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-xl leading-none transition-colors">✕</button>
             </div>
           </div>
           <input
@@ -37,10 +37,10 @@ export default function RecipePicker({ onSelect, onClose }) {
           />
         </div>
 
-        <div className="overflow-y-auto flex-1 p-3 space-y-2">
+        <div className="overflow-y-auto flex-1 p-3 space-y-1">
           {loading && <p className="text-center text-gray-400 py-6 text-sm">加载中…</p>}
           {!loading && filtered.length === 0 && (
-            <div className="text-center py-8">
+            <div className="text-center py-10">
               <p className="text-gray-400 text-sm mb-4">
                 {search ? '没有匹配的菜谱' : '还没有菜谱'}
               </p>
@@ -56,17 +56,17 @@ export default function RecipePicker({ onSelect, onClose }) {
             <button
               key={recipe.id}
               onClick={() => onSelect(recipe)}
-              className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 active:bg-gray-100 text-left transition-colors"
+              className="w-full flex items-center gap-3.5 p-3 rounded-xl hover:bg-stone-50 active:bg-stone-100 text-left transition-all duration-150"
             >
               {recipe.image_url ? (
-                <img src={recipe.image_url} alt={recipe.name} className="w-12 h-12 object-cover rounded-lg shrink-0" />
+                <img src={recipe.image_url} alt={recipe.name} className="w-12 h-12 object-cover rounded-xl shrink-0" />
               ) : (
-                <div className="w-12 h-12 bg-primary-50 rounded-lg shrink-0 flex items-center justify-center text-xl">🍽️</div>
+                <div className="w-12 h-12 bg-primary-50 rounded-xl shrink-0 flex items-center justify-center text-xl">🍽️</div>
               )}
               <div className="min-w-0">
                 <p className="font-medium text-gray-800 truncate">{recipe.name}</p>
                 {recipe.tags?.length > 0 && (
-                  <p className="text-xs text-gray-400 truncate">{recipe.tags.join('・')}</p>
+                  <p className="text-xs text-gray-400 truncate mt-0.5">{recipe.tags.join('・')}</p>
                 )}
               </div>
             </button>

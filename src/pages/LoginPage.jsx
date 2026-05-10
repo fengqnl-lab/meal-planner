@@ -5,7 +5,7 @@ import { useAuth } from '../hooks/useAuth'
 export default function LoginPage() {
   const { signIn, signUp } = useAuth()
   const navigate = useNavigate()
-  const [mode, setMode] = useState('login') // 'login' | 'register'
+  const [mode, setMode] = useState('login')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -29,25 +29,25 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-surface flex items-center justify-center px-4">
-      <div className="card w-full max-w-sm">
-        <h1 className="text-2xl font-bold text-center mb-1">🍳 一起吃饭</h1>
-        <p className="text-sm text-gray-500 text-center mb-6">家庭共享的菜谱与菜单</p>
+    <div className="min-h-screen bg-gradient-to-b from-surface to-[#f3f1ed] flex items-center justify-center px-4">
+      <div className="card-elevated w-full max-w-sm">
+        <h1 className="text-2xl font-bold text-center mb-1 text-gray-800 tracking-tight">一起吃饭</h1>
+        <p className="text-sm text-gray-400 text-center mb-8">家庭共享的菜谱与菜单</p>
 
-        <div className="flex bg-gray-100 rounded-lg p-1 mb-6">
+        <div className="flex bg-stone-100/80 rounded-xl p-1 mb-6">
           {['login', 'register'].map((m) => (
             <button
               key={m}
               onClick={() => setMode(m)}
-              className={`flex-1 text-sm py-1.5 rounded-md transition-colors
-                ${mode === m ? 'bg-white shadow-sm font-medium text-gray-800' : 'text-gray-500'}`}
+              className={`flex-1 text-sm py-2 rounded-lg transition-all duration-200
+                ${mode === m ? 'bg-white shadow-sm font-medium text-gray-800' : 'text-gray-500 hover:text-gray-700'}`}
             >
               {m === 'login' ? '登录' : '注册'}
             </button>
           ))}
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-3">
+        <form onSubmit={handleSubmit} className="space-y-3.5">
           <input
             className="input"
             type="email"

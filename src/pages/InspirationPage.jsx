@@ -44,10 +44,10 @@ export default function InspirationPage() {
 
   return (
     <div>
-      <h2 className="text-xl font-bold mb-1">食材灵感</h2>
-      <p className="text-sm text-gray-400 mb-4">输入冰箱里有的食材，发现能做的菜</p>
+      <h2 className="text-xl font-bold mb-1 text-gray-800 tracking-tight">食材灵感</h2>
+      <p className="text-sm text-gray-400 mb-5">输入冰箱里有的食材，发现能做的菜</p>
 
-      <div className="space-y-3 mb-5">
+      <div className="space-y-3 mb-6">
         <IngredientInput ingredients={ingredients} onChange={handleChange} />
         <button
           className="btn-primary w-full"
@@ -61,16 +61,16 @@ export default function InspirationPage() {
       {/* 快捷标签 */}
       {!searched && (
         <div>
-          <p className="text-xs text-gray-400 mb-2">常见食材</p>
+          <p className="text-xs text-gray-400 mb-2.5 font-medium">常见食材</p>
           <div className="flex flex-wrap gap-2">
             {['鸡蛋', '番茄', '土豆', '豆腐', '猪肉', '鸡肉', '白菜', '胡萝卜', '洋葱', '大蒜', '姜', '米饭'].map((item) => (
               <button
                 key={item}
                 onClick={() => !ingredients.includes(item) && handleChange([...ingredients, item])}
-                className={`px-3 py-1 rounded-full text-sm border transition-colors
+                className={`px-3.5 py-1.5 rounded-xl text-sm transition-all duration-200
                   ${ingredients.includes(item)
-                    ? 'bg-primary-100 border-primary-200 text-primary-600'
-                    : 'border-gray-200 text-gray-500 hover:border-primary-300'}`}
+                    ? 'bg-primary-100 text-primary-700 shadow-sm font-medium'
+                    : 'bg-white text-gray-500 shadow-card hover:shadow-card-hover'}`}
               >
                 {item}
               </button>
@@ -83,10 +83,10 @@ export default function InspirationPage() {
       {searched && (
         <div>
           {results.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-4xl mb-2">🤔</p>
+            <div className="text-center py-16">
+              <p className="text-4xl mb-3">🤔</p>
               <p className="text-gray-500 text-sm mb-1">没有找到匹配的菜谱</p>
-              <p className="text-gray-400 text-xs mb-4">试试换几个食材，或者先去菜谱库添加更多菜谱</p>
+              <p className="text-gray-400 text-xs mb-5">试试换几个食材，或者先去菜谱库添加更多菜谱</p>
               <button onClick={() => navigate('/recipes')} className="btn-primary text-sm">
                 去添加菜谱
               </button>
@@ -99,36 +99,33 @@ export default function InspirationPage() {
                   <button
                     key={recipe.id}
                     onClick={() => navigate(`/recipes/${recipe.id}`)}
-                    className="card w-full text-left flex gap-3 hover:shadow-md transition-shadow active:scale-[0.99]"
+                    className="card-hover w-full text-left flex gap-3.5 active:scale-[0.99]"
                   >
                     {recipe.image_url && (
                       <img src={recipe.image_url} alt={recipe.name}
-                        className="w-16 h-16 object-cover rounded-lg shrink-0" />
+                        className="w-16 h-16 object-cover rounded-xl shrink-0" />
                     )}
                     <div className="flex-1 min-w-0">
                       <p className="font-semibold text-gray-800">{recipe.name}</p>
 
-                      {/* 匹配食材 */}
                       <div className="flex flex-wrap gap-1 mt-1.5">
                         {recipe.matched.map((ing) => (
-                          <span key={ing} className="text-xs bg-green-50 text-green-600 border border-green-100 px-2 py-0.5 rounded-full">
+                          <span key={ing} className="text-xs bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-lg font-medium">
                             ✓ {ing}
                           </span>
                         ))}
                       </div>
 
-                      {/* 缺少食材 */}
                       {recipe.missing.length > 0 && (
-                        <p className="text-xs text-gray-400 mt-1">
+                        <p className="text-xs text-gray-400 mt-1.5">
                           还缺：{recipe.missing.slice(0, 3).join('、')}
                           {recipe.missing.length > 3 && ` 等 ${recipe.missing.length} 种`}
                         </p>
                       )}
                     </div>
 
-                    {/* 匹配分 */}
                     <div className="shrink-0 flex flex-col items-center justify-center">
-                      <span className="text-lg font-bold text-primary-500">{recipe.matched.length}</span>
+                      <span className="text-lg font-bold text-primary-600">{recipe.matched.length}</span>
                       <span className="text-xs text-gray-400">匹配</span>
                     </div>
                   </button>

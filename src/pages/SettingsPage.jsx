@@ -76,31 +76,29 @@ export default function SettingsPage() {
   if (loading) return <p className="text-center py-12 text-gray-400">加载中…</p>
 
   return (
-    <div className="space-y-5">
-      <h2 className="text-xl font-bold">设置</h2>
+    <div className="space-y-4">
+      <h2 className="text-xl font-bold text-gray-800 tracking-tight">设置</h2>
 
       {/* 个人资料 */}
       <div className="card">
-        <p className="text-xs text-gray-400 mb-3">个人资料</p>
+        <p className="text-xs text-gray-400 mb-4 font-medium uppercase tracking-wide">个人资料</p>
         <div className="flex items-center gap-4">
-          {/* 头像 */}
           <label className="relative cursor-pointer shrink-0">
-            <div className="w-16 h-16 rounded-full overflow-hidden bg-primary-100 flex items-center justify-center">
+            <div className="w-16 h-16 rounded-2xl overflow-hidden bg-primary-50 flex items-center justify-center shadow-sm">
               {currentAvatar ? (
                 <img src={currentAvatar} alt="头像" className="w-full h-full object-cover" />
               ) : (
-                <span className="text-2xl font-semibold text-primary-500">
+                <span className="text-2xl font-semibold text-primary-600">
                   {currentName?.[0]?.toUpperCase()}
                 </span>
               )}
             </div>
-            <div className="absolute bottom-0 right-0 w-5 h-5 bg-primary-500 rounded-full flex items-center justify-center text-white text-xs">
+            <div className="absolute -bottom-0.5 -right-0.5 w-5 h-5 bg-primary-600 rounded-lg flex items-center justify-center text-white text-xs shadow-sm">
               ✎
             </div>
             <input type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} disabled={profileSaving} />
           </label>
 
-          {/* 用户名 */}
           <div className="flex-1 min-w-0">
             {editingDisplayName ? (
               <form onSubmit={handleDisplayNameSave} className="flex gap-2">
@@ -118,11 +116,11 @@ export default function SettingsPage() {
               <div className="flex items-center gap-2">
                 <div>
                   <p className="font-semibold text-gray-800 truncate">{currentName}</p>
-                  <p className="text-xs text-gray-400 truncate">{session?.user?.email}</p>
+                  <p className="text-xs text-gray-400 truncate mt-0.5">{session?.user?.email}</p>
                 </div>
                 <button
                   onClick={() => { setNewDisplayName(displayName); setEditingDisplayName(true) }}
-                  className="text-xs text-gray-400 hover:text-gray-600 shrink-0"
+                  className="text-xs text-primary-600 hover:text-primary-700 shrink-0 font-medium"
                 >
                   编辑
                 </button>
@@ -130,13 +128,13 @@ export default function SettingsPage() {
             )}
           </div>
         </div>
-        <button onClick={signOut} className="mt-4 text-sm text-red-400 hover:text-red-600">退出登录</button>
+        <button onClick={signOut} className="mt-5 text-sm text-gray-400 hover:text-red-500 transition-colors">退出登录</button>
       </div>
 
       {/* 家庭信息 */}
       {family && (
         <div className="card">
-          <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center justify-between mb-4">
             {editingName ? (
               <form onSubmit={handleRename} className="flex gap-2 flex-1">
                 <input className="input flex-1" value={familyName} onChange={(e) => setFamilyName(e.target.value)} autoFocus />
@@ -146,20 +144,20 @@ export default function SettingsPage() {
             ) : (
               <>
                 <div>
-                  <p className="text-xs text-gray-400 mb-0.5">家庭名称</p>
+                  <p className="text-xs text-gray-400 mb-0.5 font-medium uppercase tracking-wide">家庭名称</p>
                   <p className="font-semibold text-gray-800">{family.name}</p>
                 </div>
                 {isOwner && (
                   <button onClick={() => { setFamilyName(family.name); setEditingName(true) }}
-                    className="text-sm text-gray-400 hover:text-gray-600">编辑</button>
+                    className="text-sm text-primary-600 hover:text-primary-700 font-medium">编辑</button>
                 )}
               </>
             )}
           </div>
 
-          <div className="mt-3">
-            <p className="text-xs text-gray-400 mb-2">成员（{activeMembers.length} 人）</p>
-            <ul className="space-y-2">
+          <div className="card-inset">
+            <p className="text-xs text-gray-400 mb-2.5 font-medium">成员（{activeMembers.length} 人）</p>
+            <ul className="space-y-2.5">
               {activeMembers.map((m) => {
                 const isSelf = m.user_id === currentUserId
                 const name = isSelf
@@ -168,20 +166,20 @@ export default function SettingsPage() {
                 const avatar = isSelf ? currentAvatar : m.profile?.avatar_url
                 return (
                 <li key={m.id} className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-primary-100 overflow-hidden flex items-center justify-center text-primary-600 text-sm font-medium shrink-0">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-lg bg-primary-50 overflow-hidden flex items-center justify-center text-primary-700 text-sm font-medium shrink-0">
                       {avatar
                         ? <img src={avatar} alt={name} className="w-full h-full object-cover" />
                         : name[0]?.toUpperCase()
                       }
                     </div>
                     <div>
-                      <p className="text-sm text-gray-700">{name}</p>
+                      <p className="text-sm text-gray-700 font-medium">{name}</p>
                       <p className="text-xs text-gray-400">{m.role === 'owner' ? '管理员' : '成员'}</p>
                     </div>
                   </div>
                   {isOwner && m.role !== 'owner' && (
-                    <button onClick={() => removeMember(m.id)} className="text-xs text-gray-300 hover:text-red-400">移除</button>
+                    <button onClick={() => removeMember(m.id)} className="text-xs text-gray-300 hover:text-red-400 transition-colors">移除</button>
                   )}
                 </li>
               )})}
@@ -189,13 +187,13 @@ export default function SettingsPage() {
           </div>
 
           {pendingMembers.length > 0 && (
-            <div className="mt-4">
-              <p className="text-xs text-gray-400 mb-2">待加入（{pendingMembers.length}）</p>
-              <ul className="space-y-2">
+            <div className="card-inset mt-3">
+              <p className="text-xs text-gray-400 mb-2.5 font-medium">待加入（{pendingMembers.length}）</p>
+              <ul className="space-y-2.5">
                 {pendingMembers.map((m) => (
                   <li key={m.id} className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-stone-100 flex items-center justify-center text-gray-400 text-sm">
                         {m.invite_email?.[0]?.toUpperCase()}
                       </div>
                       <div>
@@ -204,7 +202,7 @@ export default function SettingsPage() {
                       </div>
                     </div>
                     {isOwner && (
-                      <button onClick={() => removeMember(m.id)} className="text-xs text-gray-300 hover:text-red-400">取消</button>
+                      <button onClick={() => removeMember(m.id)} className="text-xs text-gray-300 hover:text-red-400 transition-colors">取消</button>
                     )}
                   </li>
                 ))}
@@ -217,21 +215,21 @@ export default function SettingsPage() {
       {/* 邀请表单 */}
       {isOwner && (
         <div className="card">
-          <p className="text-xs text-gray-400 mb-3">邀请家庭成员</p>
-          <form onSubmit={handleInvite} className="space-y-2">
+          <p className="text-xs text-gray-400 mb-4 font-medium uppercase tracking-wide">邀请家庭成员</p>
+          <form onSubmit={handleInvite} className="space-y-3">
             <input className="input" type="email" placeholder="输入对方邮箱" value={inviteEmail}
               onChange={(e) => setInviteEmail(e.target.value)} required />
             {inviteError && <p className="text-sm text-red-500">{inviteError}</p>}
             {inviteSuccess && (
-              <div className="bg-green-50 border border-green-100 rounded-lg p-3">
-                <p className="text-sm text-green-700">{inviteSuccess}</p>
+              <div className="card-inset !border-emerald-100 !bg-emerald-50/60">
+                <p className="text-sm text-emerald-700">{inviteSuccess}</p>
               </div>
             )}
             <button type="submit" className="btn-primary w-full" disabled={inviting}>
               {inviting ? '处理中…' : '发送邀请'}
             </button>
           </form>
-          <p className="text-xs text-gray-400 mt-3">对方用该邮箱注册后，会自动加入你的家庭，共享菜谱和菜单。</p>
+          <p className="text-xs text-gray-400 mt-3 leading-relaxed">对方用该邮箱注册后，会自动加入你的家庭，共享菜谱和菜单。</p>
         </div>
       )}
     </div>

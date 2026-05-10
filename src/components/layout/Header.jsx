@@ -11,15 +11,15 @@ const NAV_ITEMS = [
 ]
 
 export default function Header() {
-  const { session, signOut } = useAuth()
+  const { session } = useAuth()
   const { displayName, avatarUrl } = useProfile(session)
   const navigate = useNavigate()
   const currentName = displayName || session?.user?.email?.split('@')[0]
 
   return (
-    <header className="sticky top-0 z-10 bg-white border-b border-gray-100 px-4 h-14 flex items-center justify-between">
-      <button onClick={() => navigate('/recipes', { state: { cancelForm: true } })} className="font-semibold text-gray-800 hover:text-primary-600 transition-colors shrink-0">
-        🍳 一起吃饭
+    <header className="sticky top-0 z-10 bg-white/70 backdrop-blur-xl border-b border-stone-100/60 px-5 h-14 flex items-center justify-between">
+      <button onClick={() => navigate('/recipes', { state: { cancelForm: true } })} className="font-semibold text-gray-800 hover:text-primary-700 transition-colors shrink-0 tracking-tight">
+        一起吃饭
       </button>
 
       {/* 桌面端导航 */}
@@ -29,25 +29,25 @@ export default function Header() {
             key={to}
             to={to}
             className={({ isActive }) =>
-              `px-3 py-1.5 rounded-lg text-sm transition-colors flex items-center gap-1.5
-               ${isActive ? 'bg-primary-50 text-primary-600 font-medium' : 'text-gray-500 hover:bg-gray-100'}`
+              `px-3.5 py-1.5 rounded-xl text-sm transition-all duration-200 flex items-center gap-1.5
+               ${isActive ? 'bg-primary-50 text-primary-700 font-medium shadow-sm' : 'text-gray-500 hover:bg-stone-100 hover:text-gray-700'}`
             }
           >
-            <Icon size={16} strokeWidth={1.5} />{label}
+            <Icon size={15} strokeWidth={1.5} />{label}
           </NavLink>
         ))}
       </nav>
 
-      {/* 头像 + 用户名（点击跳设置） */}
-      <button onClick={() => navigate('/settings')} className="flex items-center gap-2 hover:opacity-80 transition-opacity shrink-0">
-        <div className="w-8 h-8 rounded-full overflow-hidden bg-primary-100 flex items-center justify-center shrink-0">
+      {/* 头像 */}
+      <button onClick={() => navigate('/settings')} className="flex items-center gap-2.5 hover:opacity-80 transition-opacity shrink-0">
+        <div className="w-8 h-8 rounded-full overflow-hidden bg-primary-100 flex items-center justify-center shrink-0 shadow-sm">
           {avatarUrl ? (
             <img src={avatarUrl} alt="头像" className="w-full h-full object-cover" />
           ) : (
-            <span className="text-sm font-semibold text-primary-500">{currentName?.[0]?.toUpperCase()}</span>
+            <span className="text-sm font-semibold text-primary-700">{currentName?.[0]?.toUpperCase()}</span>
           )}
         </div>
-        <span className="hidden md:block text-sm text-gray-700 max-w-24 truncate">{currentName}</span>
+        <span className="hidden md:block text-sm text-gray-600 max-w-24 truncate">{currentName}</span>
       </button>
     </header>
   )
