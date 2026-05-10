@@ -20,7 +20,8 @@
       "Bash(cp /Users/qfeng2/Desktop/Logo_shef.png /Users/qfeng2/meal-planner/public/icons/apple-touch-icon.png)",
       "Bash(npx jimp-cli *)",
       "Bash(node -e ' *)",
-      "Bash(cp /Users/qfeng2/Desktop/Logo_shef.png /Users/qfeng2/meal-planner/public/logo.png)"
+      "Bash(cp /Users/qfeng2/Desktop/Logo_shef.png /Users/qfeng2/meal-planner/public/logo.png)",
+      "Bash(node -e \"const { Jimp } = require\\('jimp'\\); Jimp.read\\('public/icons/icon-512x512.png'\\).then\\(img => img.resize\\({w:192,h:192}\\).write\\('public/icons/icon-192x192.png'\\)\\).then\\(\\(\\) => console.log\\('done'\\)\\)\")"
     ],
     "additionalDirectories": [
       "/Users/qfeng2/Desktop"
