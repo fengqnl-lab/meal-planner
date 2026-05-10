@@ -1,126 +1,134 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useMenu, getWeekRange, toDateStr } from '../hooks/useMenu'
+import { useMenu, toDateStr } from '../hooks/useMenu'
 import RecipePicker from '../components/menu/RecipePicker'
 
-const DAYS = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-const MEALS = [
-  { key: 'lunch',  label: '午餐' },
-  { key: 'dinner', label: '晚餐' },
-]
+const DAY_NAMES = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
 
-function formatMonth(date) {
-  return `${date.getMonth() + 1}月`
+function getNext7Days() {
+  const days = []
+  const today = new Date()
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(today)
+    d.setDate(today.getDate() + i)
+    days.push(d)
+  }
+  return days
 }
 
-function isToday(dateStr) {
-  return dateStr === toDateStr(new Date())
+function isWeekend(date) {
+  const day = date.getDay()
+  return day === 0 || day === 6
+}
+
+function formatTabLabel(date, index) {
+  if (index === 0) return '今天'
+  if (index === 1) return '明天'
+  return DAY_NAMES[date.getDay()]
 }
 
 export default function MenuPage() {
-  const [weekOffset, setWeekOffset] = useState(0)
-  const { planMap, loading, setPlan, clearPlan } = useMenu(weekOffset)
+  const days = getNext7Days()
+  const [selectedIdx, setSelectedIdx] = useState(0)
+  const selectedDate = days[selectedIdx]
+  const dateStr = toDateStr(selectedDate)
+  const weekend = isWeekend(selectedDate)
+
+  const { planMap, loading, setPlan, clearPlan } = useMenu(0)
   const [picking, setPicking] = useState(null)
   const navigate = useNavigate()
 
-  const [start, end] = getWeekRange(weekOffset)
-  const days = Array.from({ length: 7 }, (_, i) => {
-    const d = new Date(start)
-    d.setDate(start.getDate() + i)
-    return d
-  })
-
-  const monthLabel = start.getMonth() === end.getMonth()
-    ? `${start.getFullYear()}年${formatMonth(start)}`
-    : `${formatMonth(start)} / ${formatMonth(end)}`
+  const meals = weekend
+    ? [
+        { label: '午餐', slots: ['lunch_1', 'lunch_2'] },
+        { label: '晚餐', slots: ['dinner_1', 'dinner_2'] },
+      ]
+    : [
+        { label: '晚餐', slots: ['dinner_1', 'dinner_2'] },
+      ]
 
   async function handleSelect(recipe) {
     await setPlan(picking.date, picking.mealType, recipe.id)
     setPicking(null)
   }
 
+  function getPlan(slot) {
+    return planMap[`${dateStr}_${slot}`] || planMap[`${dateStr}_${slot.replace('_1', '').replace('_2', '')}`]
+  }
+
   return (
     <div>
-      {/* 周导航 */}
-      <div className="flex items-center justify-between mb-5">
-        <button onClick={() => setWeekOffset((w) => w - 1)} className="w-9 h-9 rounded-xl bg-white shadow-card flex items-center justify-center text-gray-500 hover:shadow-card-hover transition-all">‹</button>
-        <div className="text-center">
-          <p className="font-semibold text-gray-800 tracking-tight">{monthLabel}</p>
-          <p className="text-xs text-gray-400 mt-0.5">
-            {toDateStr(start).slice(5).replace('-', '/')} – {toDateStr(end).slice(5).replace('-', '/')}
-          </p>
-        </div>
-        <button onClick={() => setWeekOffset((w) => w + 1)} className="w-9 h-9 rounded-xl bg-white shadow-card flex items-center justify-center text-gray-500 hover:shadow-card-hover transition-all">›</button>
+      {/* 日期 tabs */}
+      <div className="flex gap-2 mb-6 overflow-x-auto scrollbar-hide -mx-4 px-4">
+        {days.map((day, i) => {
+          const active = i === selectedIdx
+          return (
+            <button
+              key={i}
+              onClick={() => setSelectedIdx(i)}
+              className={`shrink-0 flex flex-col items-center px-4 py-2.5 rounded-2xl transition-all duration-200
+                ${active
+                  ? 'bg-primary-600 text-white shadow-sm'
+                  : 'bg-white text-gray-600 shadow-card hover:shadow-card-hover'}`}
+            >
+              <span className="text-xs font-medium">{formatTabLabel(day, i)}</span>
+              <span className={`text-lg font-bold mt-0.5 ${active ? 'text-white' : 'text-gray-800'}`}>
+                {day.getDate()}
+              </span>
+            </button>
+          )
+        })}
       </div>
-
-      {weekOffset !== 0 && (
-        <button onClick={() => setWeekOffset(0)} className="w-full text-xs text-primary-600 mb-4 hover:text-primary-700 font-medium">
-          回到本周
-        </button>
-      )}
 
       {loading ? (
         <p className="text-center text-gray-400 py-12 text-sm">加载中…</p>
       ) : (
-        <div className="space-y-3">
-          {days.map((day, i) => {
-            const dateStr = toDateStr(day)
-            const today = isToday(dateStr)
-            return (
-              <div key={dateStr} className={`card ${today ? 'shadow-glow' : ''}`}>
-                {/* 日期头 */}
-                <div className="flex items-center gap-2 mb-3">
-                  <span className={`text-sm font-semibold ${today ? 'text-primary-700' : 'text-gray-700'}`}>
-                    {DAYS[i]}
-                  </span>
-                  <span className="text-xs text-gray-400">{dateStr.slice(5).replace('-', '/')}</span>
-                  {today && <span className="text-xs bg-primary-100 text-primary-700 px-2 py-0.5 rounded-lg font-medium">今天</span>}
-                </div>
-
-                {/* 午餐 / 晚餐 */}
-                <div className="grid grid-cols-2 gap-2.5">
-                  {MEALS.map(({ key, label }) => {
-                    const plan = planMap[`${dateStr}_${key}`]
-                    return (
-                      <div key={key}>
-                        <p className="text-xs text-gray-400 mb-1.5 font-medium">{label}</p>
-                        {plan ? (
-                          <div
-                            className="relative group rounded-xl overflow-hidden bg-stone-50 border border-stone-100 cursor-pointer hover:shadow-sm transition-all"
-                            onClick={() => plan.recipe?.id && navigate(`/recipes/${plan.recipe.id}`)}
-                          >
-                            {plan.recipe?.image_url && (
-                              <img src={plan.recipe.image_url} alt="" className="w-full h-16 object-cover" />
-                            )}
-                            <p className={`text-sm font-medium text-gray-700 px-2.5 py-2 truncate
-                              ${plan.recipe?.image_url ? 'bg-white/90' : ''}`}>
-                              {plan.recipe?.name ?? '已规划'}
-                            </p>
-                            <button
-                              onClick={(e) => { e.stopPropagation(); clearPlan(dateStr, key) }}
-                              className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-black/30 text-white text-xs
-                                         flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm"
-                            >
-                              ✕
-                            </button>
-                          </div>
-                        ) : (
+        <div className="space-y-6">
+          {meals.map(({ label, slots }) => (
+            <section key={label}>
+              <h3 className="text-sm font-semibold text-gray-700 mb-3">{label}</h3>
+              <div className="grid grid-cols-2 gap-3">
+                {slots.map((slot) => {
+                  const plan = getPlan(slot)
+                  return (
+                    <div key={slot}>
+                      {plan ? (
+                        <div
+                          className="card-hover cursor-pointer group relative"
+                          onClick={() => plan.recipe?.id && navigate(`/recipes/${plan.recipe.id}`)}
+                        >
+                          {plan.recipe?.image_url ? (
+                            <img src={plan.recipe.image_url} alt="" className="w-full aspect-square object-cover rounded-xl mb-2" />
+                          ) : (
+                            <div className="w-full aspect-square bg-stone-100 rounded-xl mb-2 flex items-center justify-center text-3xl text-stone-300">🍽️</div>
+                          )}
+                          <p className="text-sm font-medium text-gray-800 text-center line-clamp-2">
+                            {plan.recipe?.name ?? '已规划'}
+                          </p>
                           <button
-                            onClick={() => setPicking({ date: dateStr, mealType: key })}
-                            className="w-full h-14 rounded-xl border-2 border-dashed border-stone-200
-                                       text-stone-300 text-xl hover:border-primary-400 hover:text-primary-500
-                                       transition-all duration-200 flex items-center justify-center"
+                            onClick={(e) => { e.stopPropagation(); clearPlan(dateStr, slot) }}
+                            className="absolute top-2 right-2 w-6 h-6 rounded-full bg-black/30 backdrop-blur-sm text-white text-xs
+                                       flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
                           >
-                            +
+                            ✕
                           </button>
-                        )}
-                      </div>
-                    )
-                  })}
-                </div>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => setPicking({ date: dateStr, mealType: slot })}
+                          className="w-full aspect-square rounded-xl border-2 border-dashed border-stone-200
+                                     text-stone-300 text-3xl hover:border-primary-400 hover:text-primary-500
+                                     transition-all duration-200 flex items-center justify-center bg-white/50"
+                        >
+                          +
+                        </button>
+                      )}
+                    </div>
+                  )
+                })}
               </div>
-            )
-          })}
+            </section>
+          ))}
         </div>
       )}
 

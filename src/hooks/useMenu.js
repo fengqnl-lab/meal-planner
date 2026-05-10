@@ -1,10 +1,9 @@
 import { useEffect, useState, useCallback } from 'react'
 import { supabase } from '../lib/supabase'
 
-// 返回某周的 [startDate, endDate]（周一到周日）
 export function getWeekRange(offset = 0) {
   const now = new Date()
-  const day = now.getDay() || 7  // 把周日的 0 改成 7
+  const day = now.getDay() || 7
   const monday = new Date(now)
   monday.setDate(now.getDate() - day + 1 + offset * 7)
   monday.setHours(0, 0, 0, 0)
@@ -20,22 +19,24 @@ export function toDateStr(date) {
   return `${y}-${m}-${d}`
 }
 
-export function useMenu(weekOffset = 0) {
+export function useMenu() {
   const [plans, setPlans] = useState([])
   const [loading, setLoading] = useState(true)
 
-  const [start, end] = getWeekRange(weekOffset)
+  const today = new Date()
+  const end = new Date(today)
+  end.setDate(today.getDate() + 6)
 
   const fetchPlans = useCallback(async () => {
     setLoading(true)
     const { data } = await supabase
       .from('menu_plans')
       .select('*, recipe:recipes(id, name, image_url)')
-      .gte('date', toDateStr(start))
+      .gte('date', toDateStr(today))
       .lte('date', toDateStr(end))
     setPlans(data ?? [])
     setLoading(false)
-  }, [weekOffset])
+  }, [])
 
   useEffect(() => { fetchPlans() }, [fetchPlans])
 
@@ -77,7 +78,6 @@ export function useMenu(weekOffset = 0) {
     await fetchPlans()
   }
 
-  // 按 date+meal_type 索引，方便查找
   const planMap = {}
   for (const p of plans) {
     planMap[`${p.date}_${p.meal_type}`] = p
